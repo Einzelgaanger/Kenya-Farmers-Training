@@ -6,7 +6,7 @@
 
 ## Live demo
 
-**https://afix.jabali.studio**
+**https://afix.vgg.app**
 
 Password for all demo accounts: **`Afix2026!`**
 
