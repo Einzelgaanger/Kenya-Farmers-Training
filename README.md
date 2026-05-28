@@ -6,6 +6,12 @@
 
 ## Live demo
 
+**https://afix.jabali.studio**
+
+Password for all demo accounts: **`Afix2026!`**
+
+### Run locally
+
 ```bash
 npm install
 npm run dev
