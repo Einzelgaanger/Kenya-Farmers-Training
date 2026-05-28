@@ -63,8 +63,19 @@ export default function AuthPage() {
       </div>
 
       {/* Right login form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 relative flex items-center justify-center p-8 overflow-hidden">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          style={{ backgroundImage: 'url(/auth-bg.png)' }}
+          aria-hidden
+        />
+        {/* Light overlay — keeps form readable */}
+        <div className="absolute inset-0 bg-white/78 backdrop-blur-[2px]" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-primary/5" aria-hidden />
+
+        <div className="relative z-10 w-full max-w-sm">
+          <div className="rounded-2xl border border-white/60 bg-white/90 shadow-xl shadow-black/5 backdrop-blur-md p-8">
           <div className="lg:hidden flex items-center gap-2 mb-8">
             <ShieldCheck size={24} className="text-gold" />
             <span className="font-display text-xl font-bold">AFIX</span>
@@ -137,6 +148,7 @@ export default function AuthPage() {
               ))}
             </div>
             <p className="text-[10px] text-muted-foreground mt-3">Password for all: <code className="font-mono bg-secondary px-1 rounded">Afix2026!</code></p>
+          </div>
           </div>
         </div>
       </div>
