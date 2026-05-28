@@ -5,13 +5,13 @@ import { demoOrganisations } from '@/data/seed';
 import { Building2, Mail, Hash, Calendar } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 
-export default function SPVProfilePage() {
+export default function BuyerProfilePage() {
   const { user } = useAuth();
   const org = demoOrganisations.find(o => o.id === user?.organisationId);
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <PageHeader title="Profile" subtitle="SPV account and operational details" />
+      <PageHeader title="Profile" subtitle="Your account and organisation details" />
 
       <ProfileEditor />
 

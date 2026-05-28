@@ -1,217 +1,87 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useData } from '@/contexts/DataContext';
+import { useNotifications } from '@/contexts/NotificationContext';
 import { useAuth } from '@/contexts/AuthContext';
-import PortalLayout from '@/components/layout/PortalLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { supabase } from '@/integrations/supabase/client';
-import { FileText, Clock, CheckCircle, DollarSign } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import IdentityCard from '@/components/identity/IdentityCard';
-import ProfileCompletionCard from '@/components/identity/ProfileCompletionCard';
+import PageHeader from '@/components/layout/PageHeader';
+import StatCard from '@/components/shared/StatCard';
+import { Database, Send, Layers, DollarSign, ArrowRight } from 'lucide-react';
+import { formatCurrency, formatDate } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
-interface Bill {
-  id: string;
-  invoice_number: string;
-  amount: number;
-  status: string;
-  created_at: string;
-}
-
-const SPVDashboard = () => {
+export default function SPVDashboard() {
+  const { user } = useAuth();
+  const { invoices, offers, packages, consents } = useData();
+  const { notifications } = useNotifications();
   const navigate = useNavigate();
-  const { profile } = useAuth();
-  const [bills, setBills] = useState<Bill[]>([]);
-  const [myOffers, setMyOffers] = useState<Bill[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      
-      // Fetch all submitted bills
-      const { data: billsData } = await supabase
-        .from('bills')
-        .select('*')
-        .in('status', ['submitted', 'under_review'])
-        .order('created_at', { ascending: false })
-        .limit(5);
-      
-      if (billsData) setBills(billsData as Bill[]);
-
-      // Fetch bills where SPV made offers
-      const { data: offersData } = await supabase
-        .from('bills')
-        .select('*')
-        .not('spv_id', 'is', null)
-        .order('offer_date', { ascending: false })
-        .limit(5);
-      
-      if (offersData) setMyOffers(offersData as Bill[]);
-      
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
-
-  const stats = {
-    availableBills: bills.length,
-    activeOffers: myOffers.filter(b => b.status === 'offer_made').length,
-    acceptedOffers: myOffers.filter(b => ['offer_accepted', 'mda_reviewing', 'mda_approved', 'certified'].includes(b.status)).length,
-    totalInvested: myOffers.filter(b => b.status === 'certified').reduce((sum, b) => sum + Number(b.amount), 0),
-  };
+  const verifiedInvoices = invoices.filter(inv => inv.status === 'verified');
+  const activeOffers = offers.filter(o => o.status === 'pending');
+  const totalAUM = packages.reduce((sum, p) => sum + p.totalFaceValue, 0);
+  const pendingConsents = consents.filter(c => c.status === 'pending');
+  const userNotifs = notifications.filter(n => n.userId === user?.id && !n.read);
 
   return (
-    <PortalLayout>
-      <div className="p-6 space-y-6">
-        {/* Identity Section */}
-        <div className="flex flex-col lg:flex-row gap-4">
-          <IdentityCard variant="full" className="flex-1" />
-          <div className="flex flex-col gap-4 lg:w-80">
-            <ProfileCompletionCard />
-            <Button onClick={() => navigate('/spv/bills')} size="lg" className="w-full">
-              <FileText className="w-4 h-4 mr-2" />
-              Browse Bills
-            </Button>
+    <div className="space-y-6 animate-fade-in">
+      <PageHeader
+        title={`Welcome back, ${user?.name.split(' ')[0]}`}
+        subtitle="AFIX Capital SPV — Operations Dashboard"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Available IOUs" value={verifiedInvoices.length} icon={Database} accent="blue" />
+        <StatCard label="Active Offers" value={activeOffers.length} icon={Send} accent="gold" />
+        <StatCard label="Packages" value={packages.length} icon={Layers} accent="green" />
+        <StatCard label="Total AUM" value={formatCurrency(totalAUM)} icon={DollarSign} accent="gold" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Pipeline summary */}
+        <div className="border rounded-lg">
+          <div className="flex items-center justify-between p-4 border-b">
+            <h3 className="font-semibold text-sm">Pipeline Overview</h3>
+            <button onClick={() => navigate('/spv/registry')} className="text-xs text-primary hover:underline flex items-center gap-1">
+              Go to Registry <ArrowRight size={12} />
+            </button>
+          </div>
+          <div className="p-4 space-y-3">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Verified (ready for offer)</span>
+              <span className="font-mono font-medium">{verifiedInvoices.length}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Offers pending response</span>
+              <span className="font-mono font-medium">{activeOffers.length}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Awaiting buyer consent</span>
+              <span className="font-mono font-medium">{pendingConsents.length}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground">Assigned (packagable)</span>
+              <span className="font-mono font-medium">{invoices.filter(i => i.status === 'assigned').length}</span>
+            </div>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-blue-100">
-                  <FileText className="w-5 h-5 text-blue-600" />
+        {/* Recent notifications */}
+        <div className="border rounded-lg">
+          <div className="p-4 border-b">
+            <h3 className="font-semibold text-sm">Notifications</h3>
+          </div>
+          <div className="divide-y max-h-64 overflow-y-auto">
+            {userNotifs.length === 0 ? (
+              <p className="p-4 text-sm text-muted-foreground">No new notifications</p>
+            ) : (
+              userNotifs.map(n => (
+                <div key={n.id} className="px-4 py-3">
+                  <p className="text-sm font-medium">{n.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{n.message}</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">{formatDate(n.createdAt)}</p>
                 </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.availableBills}</p>
-                  <p className="text-sm text-muted-foreground">Available Bills</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-purple-100">
-                  <Clock className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.activeOffers}</p>
-                  <p className="text-sm text-muted-foreground">Pending Offers</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-green-100">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{stats.acceptedOffers}</p>
-                  <p className="text-sm text-muted-foreground">Accepted Offers</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-accent/20">
-                  <DollarSign className="w-5 h-5 text-accent" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">KES {(stats.totalInvested / 1000000).toFixed(1)}M</p>
-                  <p className="text-sm text-muted-foreground">Total Invested</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Available Bills */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Available Bills</CardTitle>
-                <CardDescription>New bills ready for offers</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/spv/bills')}>
-                View All
-              </Button>
-            </CardHeader>
-            <CardContent>
-              {bills.length === 0 ? (
-                <p className="text-center py-4 text-muted-foreground">No bills available</p>
-              ) : (
-                <div className="space-y-3">
-                  {bills.map((bill) => (
-                    <div 
-                      key={bill.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 cursor-pointer"
-                      onClick={() => navigate('/spv/bills')}
-                    >
-                      <div>
-                        <p className="font-medium">{bill.invoice_number}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(bill.created_at), { addSuffix: true })}
-                        </p>
-                      </div>
-                      <span className="font-bold">KES {Number(bill.amount).toLocaleString()}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* My Offers */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>My Offers</CardTitle>
-                <CardDescription>Track your investment offers</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/spv/offers')}>
-                View All
-              </Button>
-            </CardHeader>
-            <CardContent>
-              {myOffers.length === 0 ? (
-                <p className="text-center py-4 text-muted-foreground">No offers made yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {myOffers.map((bill) => (
-                    <div 
-                      key={bill.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-secondary/30"
-                    >
-                      <div>
-                        <p className="font-medium">{bill.invoice_number}</p>
-                        <Badge variant="outline" className="mt-1">
-                          {bill.status.replace(/_/g, ' ')}
-                        </Badge>
-                      </div>
-                      <span className="font-bold">KES {Number(bill.amount).toLocaleString()}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              ))
+            )}
+          </div>
         </div>
       </div>
-    </PortalLayout>
+    </div>
   );
-};
-
-export default SPVDashboard;
+}

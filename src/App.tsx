@@ -1,121 +1,108 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { FilterProvider } from "@/contexts/FilterContext";
-import { DataProvider } from "@/contexts/DataContext";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import ScrollToTop from "@/components/ScrollToTop";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth, getRoleRedirect } from '@/contexts/AuthContext';
+import { NotificationProvider } from '@/contexts/NotificationContext';
+import { DataProvider } from '@/contexts/DataContext';
+import { Toaster } from 'sonner';
 
-// Auth
-import AuthPage from "./pages/AuthPage";
+import ProtectedRoute from '@/components/ProtectedRoute';
+import PortalLayout from '@/components/layout/PortalLayout';
+import IdleWarningModal from '@/components/shared/IdleWarningModal';
+import AuthPage from '@/pages/AuthPage';
 
-// Supplier Portal
-import SupplierDashboard from "./pages/supplier/SupplierDashboard";
-import SubmitBillPage from "./pages/supplier/SubmitBillPage";
-import MyBillsPage from "./pages/supplier/MyBillsPage";
-import SupplierProfilePage from "./pages/supplier/SupplierProfilePage";
+// Supplier pages
+import SupplierDashboard from '@/pages/supplier/SupplierDashboard';
+import MyInvoicesPage from '@/pages/supplier/MyInvoicesPage';
+import InvoiceDetailPage from '@/pages/supplier/InvoiceDetailPage';
+import ListInvoicePage from '@/pages/supplier/ListInvoicePage';
+import TradeHistoryPage from '@/pages/supplier/TradeHistoryPage';
+import SupplierProfilePage from '@/pages/supplier/SupplierProfilePage';
 
-// SPV Portal
-import SPVDashboard from "./pages/spv/SPVDashboard";
-import SPVBillsPage from "./pages/spv/SPVBillsPage";
-import SPVOffersPage from "./pages/spv/SPVOffersPage";
-import SPVProfilePage from "./pages/spv/SPVProfilePage";
-import SPVBlockchainPage from "./pages/spv/SPVBlockchainPage";
-import SPVBackendEnginePage from "./pages/spv/SPVBackendEnginePage";
+// Buyer pages
+import BuyerDashboard from '@/pages/buyer/BuyerDashboard';
+import InvoiceRegisterPage from '@/pages/buyer/InvoiceRegisterPage';
+import ConsentInboxPage from '@/pages/buyer/ConsentInboxPage';
+import PaymentSchedulePage from '@/pages/buyer/PaymentSchedulePage';
+import BuyerProfilePage from '@/pages/buyer/BuyerProfilePage';
 
-// MDA Portal
-import MDADashboard from "./pages/mda/MDADashboard";
-import MDABillsPage from "./pages/mda/MDABillsPage";
-import MDAPayablesPage from "./pages/mda/MDAPayablesPage";
-import MDAApprovedPage from "./pages/mda/MDAApprovedPage";
-import MDAProfilePage from "./pages/mda/MDAProfilePage";
+// SPV pages
+import SPVDashboard from '@/pages/spv/SPVDashboard';
+import IOURegistryPage from '@/pages/spv/IOURegistryPage';
+import OffersPage from '@/pages/spv/OffersPage';
+import PackagingPage from '@/pages/spv/PackagingPage';
+import AssignmentRegistryPage from '@/pages/spv/AssignmentRegistryPage';
+import BackendEnginePage from '@/pages/spv/BackendEnginePage';
+import SPVProfilePage from '@/pages/spv/SPVProfilePage';
 
-// Treasury Portal
-import TreasuryDashboard from "./pages/treasury/TreasuryDashboard";
-import TreasuryPendingPage from "./pages/treasury/TreasuryPendingPage";
-import TreasuryCertifiedPage from "./pages/treasury/TreasuryCertifiedPage";
-import TreasuryProfilePage from "./pages/treasury/TreasuryProfilePage";
-import TreasuryBackendEnginePage from "./pages/treasury/TreasuryBackendEnginePage";
+// Admin pages
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AllInvoicesPage from '@/pages/admin/AllInvoicesPage';
+import UsersPage from '@/pages/admin/UsersPage';
+import WorkflowMonitorPage from '@/pages/admin/WorkflowMonitorPage';
+import AnalyticsPage from '@/pages/admin/AnalyticsPage';
+import NotFound from '@/pages/NotFound';
 
-// Admin Portal
-import AppLayout from "@/components/layout/AppLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminBillsPage from "./pages/admin/AdminBillsPage";
-import AdminUsersPage from "./pages/admin/AdminUsersPage";
-import WorkflowPage from "./pages/WorkflowPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import PaymentSchedulePage from "./pages/PaymentSchedulePage";
-import NotFound from "./pages/NotFound";
-import ConceptNotePage from "./pages/ConceptNotePage";
+function AppRoutes() {
+  const { isAuthenticated, user } = useAuth();
 
-const queryClient = new QueryClient();
+  return (
+    <Routes>
+      <Route path="/login" element={isAuthenticated && user ? <Navigate to={getRoleRedirect(user.role)} /> : <AuthPage />} />
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <DataProvider>
-        <FilterProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <Routes>
-                {/* Public Pages */}
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/conceptnote" element={<ConceptNotePage />} />
-                
-                {/* Supplier Portal */}
-                <Route path="/supplier" element={<ProtectedRoute allowedRoles={['supplier']}><SupplierDashboard /></ProtectedRoute>} />
-                <Route path="/supplier/submit-bill" element={<ProtectedRoute allowedRoles={['supplier']}><SubmitBillPage /></ProtectedRoute>} />
-                <Route path="/supplier/my-bills" element={<ProtectedRoute allowedRoles={['supplier']}><MyBillsPage /></ProtectedRoute>} />
-                <Route path="/supplier/profile" element={<ProtectedRoute allowedRoles={['supplier']}><SupplierProfilePage /></ProtectedRoute>} />
+      {/* Supplier Portal */}
+      <Route path="/supplier" element={<ProtectedRoute allowedRole="supplier"><PortalLayout /></ProtectedRoute>}>
+        <Route index element={<SupplierDashboard />} />
+        <Route path="invoices" element={<MyInvoicesPage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
+        <Route path="list" element={<ListInvoicePage />} />
+        <Route path="history" element={<TradeHistoryPage />} />
+        <Route path="profile" element={<SupplierProfilePage />} />
+      </Route>
 
-                {/* SPV Portal */}
-                <Route path="/spv" element={<ProtectedRoute allowedRoles={['spv']}><SPVDashboard /></ProtectedRoute>} />
-                <Route path="/spv/bills" element={<ProtectedRoute allowedRoles={['spv']}><SPVBillsPage /></ProtectedRoute>} />
-                <Route path="/spv/offers" element={<ProtectedRoute allowedRoles={['spv']}><SPVOffersPage /></ProtectedRoute>} />
-                <Route path="/spv/blockchain" element={<ProtectedRoute allowedRoles={['spv']}><SPVBlockchainPage /></ProtectedRoute>} />
-                <Route path="/spv/profile" element={<ProtectedRoute allowedRoles={['spv']}><SPVProfilePage /></ProtectedRoute>} />
-                <Route path="/spv/backend-engine" element={<ProtectedRoute allowedRoles={['spv']}><SPVBackendEnginePage /></ProtectedRoute>} />
+      {/* Buyer Portal */}
+      <Route path="/buyer" element={<ProtectedRoute allowedRole="buyer"><PortalLayout /></ProtectedRoute>}>
+        <Route index element={<BuyerDashboard />} />
+        <Route path="register" element={<InvoiceRegisterPage />} />
+        <Route path="consent" element={<ConsentInboxPage />} />
+        <Route path="payments" element={<PaymentSchedulePage />} />
+        <Route path="profile" element={<BuyerProfilePage />} />
+      </Route>
 
-                {/* MDA Portal */}
-                <Route path="/mda" element={<ProtectedRoute allowedRoles={['mda']}><MDADashboard /></ProtectedRoute>} />
-                <Route path="/mda/bills" element={<ProtectedRoute allowedRoles={['mda']}><MDABillsPage /></ProtectedRoute>} />
-                <Route path="/mda/payables" element={<ProtectedRoute allowedRoles={['mda']}><MDAPayablesPage /></ProtectedRoute>} />
-                <Route path="/mda/approved" element={<ProtectedRoute allowedRoles={['mda']}><MDAApprovedPage /></ProtectedRoute>} />
-                <Route path="/mda/profile" element={<ProtectedRoute allowedRoles={['mda']}><MDAProfilePage /></ProtectedRoute>} />
+      {/* SPV Portal */}
+      <Route path="/spv" element={<ProtectedRoute allowedRole="spv"><PortalLayout /></ProtectedRoute>}>
+        <Route index element={<SPVDashboard />} />
+        <Route path="registry" element={<IOURegistryPage />} />
+        <Route path="offers" element={<OffersPage />} />
+        <Route path="packaging" element={<PackagingPage />} />
+        <Route path="assignments" element={<AssignmentRegistryPage />} />
+        <Route path="engine" element={<BackendEnginePage />} />
+        <Route path="profile" element={<SPVProfilePage />} />
+      </Route>
 
-                {/* Treasury Portal */}
-                <Route path="/treasury" element={<ProtectedRoute allowedRoles={['treasury']}><TreasuryDashboard /></ProtectedRoute>} />
-                <Route path="/treasury/pending" element={<ProtectedRoute allowedRoles={['treasury']}><TreasuryPendingPage /></ProtectedRoute>} />
-                <Route path="/treasury/certified" element={<ProtectedRoute allowedRoles={['treasury']}><TreasuryCertifiedPage /></ProtectedRoute>} />
-                <Route path="/treasury/backend-engine" element={<ProtectedRoute allowedRoles={['treasury']}><TreasuryBackendEnginePage /></ProtectedRoute>} />
-                <Route path="/treasury/profile" element={<ProtectedRoute allowedRoles={['treasury']}><TreasuryProfilePage /></ProtectedRoute>} />
+      {/* Admin Portal */}
+      <Route path="/admin" element={<ProtectedRoute allowedRole="admin"><PortalLayout /></ProtectedRoute>}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="invoices" element={<AllInvoicesPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="workflow" element={<WorkflowMonitorPage />} />
+        <Route path="analytics" element={<AnalyticsPage />} />
+      </Route>
 
-                {/* Admin Portal */}
-                <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><AdminDashboard /></AppLayout></ProtectedRoute>} />
-                <Route path="/admin/bills" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><AdminBillsPage /></AppLayout></ProtectedRoute>} />
-                <Route path="/admin/workflow" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><WorkflowPage /></AppLayout></ProtectedRoute>} />
-                <Route path="/admin/suppliers" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><AdminUsersPage /></AppLayout></ProtectedRoute>} />
-                <Route path="/admin/mdas" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><AdminUsersPage /></AppLayout></ProtectedRoute>} />
-                <Route path="/admin/analytics" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><AnalyticsPage /></AppLayout></ProtectedRoute>} />
-                <Route path="/admin/payment-schedule" element={<ProtectedRoute allowedRoles={['admin']}><AppLayout><PaymentSchedulePage /></AppLayout></ProtectedRoute>} />
+      <Route path="/" element={<Navigate to={isAuthenticated && user ? getRoleRedirect(user.role) : '/login'} replace />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
 
-                {/* Root redirect to auth */}
-                <Route path="/" element={<Navigate to="/auth" replace />} />
-                
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </FilterProvider>
-      </DataProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default function App() {
+  return (
+    <NotificationProvider>
+      <AuthProvider>
+        <DataProvider>
+          <AppRoutes />
+          <IdleWarningModal />
+          <Toaster position="top-right" richColors />
+        </DataProvider>
+      </AuthProvider>
+    </NotificationProvider>
+  );
+}

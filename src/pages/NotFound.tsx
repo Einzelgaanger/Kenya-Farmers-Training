@@ -1,24 +1,22 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from 'react-router-dom';
+import { useAuth, getRoleRedirect } from '@/contexts/AuthContext';
+import { ShieldCheck } from 'lucide-react';
 
-const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+export default function NotFound() {
+  const { isAuthenticated, user } = useAuth();
+  const home = isAuthenticated && user ? getRoleRedirect(user.role) : '/login';
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center">
+      <ShieldCheck size={48} className="text-gold mb-4" />
+      <h1 className="font-display text-4xl font-bold mb-2">404</h1>
+      <p className="text-muted-foreground mb-6">This page does not exist on the AFIX platform.</p>
+      <Link
+        to={home}
+        className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+      >
+        {isAuthenticated ? 'Back to Dashboard' : 'Go to Sign In'}
+      </Link>
     </div>
   );
-};
-
-export default NotFound;
+}
