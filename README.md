@@ -1,16 +1,22 @@
-# AFIX — Trade Receivables Securitisation Platform
+# Kenya Farmers Training — Trade Receivables Platform (AFIX)
 
-**Transform receivables into liquid capital.** AFIX is a private-sector trade receivables securitisation platform with role-based portals for **Suppliers**, **Buyers**, **SPV**, and **Admin** — covering listing, verification, offers, buyer consent, packaging, and settlement.
+**Single integrated repository** for the private-sector trade receivables platform.
 
-![AFIX social preview](./social-preview.png)
+Connects **Suppliers**, **Buyers**, **SPV**, and **Admin** — invoice listing, verification, purchase offers, buyer consent, packaging, and settlement.
 
-## Live demo
+Built as a polished AFIX-style product, incorporating selected workflow patterns from a prior government receivables system (adapted for private sector). Theme: **blue / green / white**.
 
-**https://afix.vgg.app**
+---
 
-Password for all demo accounts: **`Afix2026!`**
+## Repository
 
-### Run locally
+**https://github.com/Einzelgaanger/Kenya-Farmers-Training**
+
+This is the only active project repo for this build. Do not push client work to other remotes.
+
+---
+
+## Run locally
 
 ```bash
 npm install
@@ -21,7 +27,7 @@ Open **http://localhost:5173**
 
 ## Demo accounts
 
-Password for all: **`Afix2026!`**
+Password for all: **`AFIX2026!`**
 
 | Role     | Email               |
 |----------|---------------------|
@@ -32,23 +38,24 @@ Password for all: **`Afix2026!`**
 
 ## Features
 
-- **Supplier** — list invoices, review offers, track lifecycle
+- **Supplier** — list invoices, attach documents, review offers, track lifecycle
 - **Buyer** — verify register, sign assignment consent, payment schedule
-- **SPV** — IOU registry, purchase offers, packaging & NSE USP, backend engine
-- **Admin** — pipeline analytics, users, workflow monitor
+- **SPV** — IOU registry, offer calculator, packaging, assignments, backend engine
+- **Admin** — pipeline, users & orgs, workflow monitor, analytics
 
 ## Stack
 
-React 18 · TypeScript · Vite · Tailwind CSS · Recharts · mock-data only (no backend required)
+React 18 · TypeScript · Vite · Tailwind CSS · Recharts · mock data (no backend required)
 
 ## Scripts
 
-| Command           | Description              |
-|-------------------|--------------------------|
-| `npm run dev`     | Development server       |
-| `npm run build`   | Production build         |
+| Command         | Description              |
+|-----------------|--------------------------|
+| `npm run dev`   | Development server       |
+| `npm run build` | Production build         |
+| `npm start`     | Serve production `dist/` |
 | `npm run preview` | Preview production build |
 
 ---
 
-© 2026 AFIX Capital · ProDG Engineering
+© 2026 · Client delivery build
