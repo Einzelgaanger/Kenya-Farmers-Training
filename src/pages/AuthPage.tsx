@@ -35,16 +35,18 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left branding panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-900 to-gray-800 p-12 flex-col justify-between relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#0B3A6E] via-[#1B6BB5] to-[#1A7A4C] p-12 flex-col justify-between relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
         </div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <ShieldCheck size={32} className="text-gold" />
+            <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+              <ShieldCheck size={24} className="text-white" />
+            </div>
             <span className="font-display text-3xl font-bold text-white tracking-tight">AFIX</span>
           </div>
-          <p className="text-gray-400 text-sm">Private-Sector Trade Receivables Securitisation</p>
+          <p className="text-white/70 text-sm">Private-Sector Trade Receivables Platform</p>
         </div>
         <div className="relative z-10 space-y-6">
           <h2 className="font-display text-3xl text-white leading-tight">
@@ -53,13 +55,13 @@ export default function AuthPage() {
           <div className="space-y-3">
             {['End-to-end invoice lifecycle management', 'Institutional-grade securitisation engine', 'Multi-party consent & assignment workflow'].map(item => (
               <div key={item} className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-                <span className="text-gray-300 text-sm">{item}</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
+                <span className="text-white/85 text-sm">{item}</span>
               </div>
             ))}
           </div>
         </div>
-        <p className="relative z-10 text-gray-500 text-xs">© 2026 AFIX Capital · ProDG Engineering</p>
+        <p className="relative z-10 text-white/50 text-xs">© 2026 AFIX · Private-sector receivables</p>
       </div>
 
       {/* Right login form */}
@@ -77,7 +79,7 @@ export default function AuthPage() {
         <div className="relative z-10 w-full max-w-sm">
           <div className="rounded-2xl border border-white/60 bg-white/90 shadow-xl shadow-black/5 backdrop-blur-md p-8">
           <div className="lg:hidden flex items-center gap-2 mb-8">
-            <ShieldCheck size={24} className="text-gold" />
+            <ShieldCheck size={24} className="text-primary" />
             <span className="font-display text-xl font-bold">AFIX</span>
           </div>
 

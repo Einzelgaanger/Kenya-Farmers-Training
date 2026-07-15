@@ -8,12 +8,14 @@ import StatusBadge from '@/components/shared/StatusBadge';
 import { formatCurrency } from '@/lib/utils';
 import { Invoice, PurchaseOffer } from '@/types';
 import { toast } from 'sonner';
+import OfferCalculator from '@/components/shared/OfferCalculator';
 
 export default function OffersPage() {
   const { invoices, offers, makeOffer } = useData();
   const actor = useActor();
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
-  const [discountRate, setDiscountRate] = useState('5.0');
+  const [discountRate, setDiscountRate] = useState('5');
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<'available' | 'pending' | 'accepted' | 'receivables' | 'closed'>('available');
 
@@ -48,6 +50,7 @@ export default function OffersPage() {
 
     setLoading(false);
     setSelectedInvoice(null);
+    setAgreed(false);
     toast.success('Offer submitted successfully');
   };
 
@@ -127,41 +130,35 @@ export default function OffersPage() {
 
       {/* Offer modal */}
       {selectedInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setSelectedInvoice(null)} />
-          <div className="relative bg-card rounded-lg shadow-lg border p-6 w-full max-w-md mx-4 animate-fade-in">
-            <h2 className="text-lg font-semibold mb-4">Make Purchase Offer</h2>
-            <div className="space-y-3 text-sm mb-5">
-              <div><p className="text-muted-foreground text-xs">IOU Registry ID</p><p className="font-mono">{selectedInvoice.iouRegistryId}</p></div>
-              <div><p className="text-muted-foreground text-xs">Supplier</p><p>{selectedInvoice.supplierName}</p></div>
-              <div><p className="text-muted-foreground text-xs">Face Value</p><p className="font-mono font-medium">{formatCurrency(selectedInvoice.amount)}</p></div>
-              <div>
-                <label className="block text-muted-foreground text-xs mb-1">Discount Rate (%)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0.5"
-                  max="20"
-                  value={discountRate}
-                  onChange={e => setDiscountRate(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <div>
-                <p className="text-muted-foreground text-xs">Offer Price</p>
-                <p className="font-mono font-bold text-lg">{formatCurrency(Math.round(selectedInvoice.amount * (1 - parseFloat(discountRate || '0') / 100)))}</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => { setSelectedInvoice(null); setAgreed(false); }} />
+          <div className="relative bg-card rounded-xl shadow-lg border p-6 w-full max-w-md animate-fade-in max-h-[90vh] overflow-y-auto">
+            <h2 className="text-lg font-semibold mb-1">Make purchase offer</h2>
+            <p className="text-xs text-muted-foreground font-mono mb-4">{selectedInvoice.iouRegistryId}</p>
+
+            <OfferCalculator
+              faceValue={selectedInvoice.amount}
+              supplierName={selectedInvoice.supplierName}
+              buyerName={selectedInvoice.buyerName}
+              discountRate={discountRate}
+              onDiscountChange={setDiscountRate}
+            />
+
+            <label className="flex items-start gap-2 mt-4 text-xs text-muted-foreground cursor-pointer">
+              <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} className="mt-0.5" />
+              I confirm this offer is binding upon supplier acceptance and initiates the assignment workflow.
+            </label>
+
+            <div className="flex gap-3 mt-5">
               <button
                 onClick={handleMakeOffer}
-                disabled={loading}
+                disabled={loading || !agreed}
                 className="flex-1 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
-                {loading ? 'Submitting...' : 'Submit Offer'}
+                {loading ? 'Submitting...' : 'Submit offer'}
               </button>
               <button
-                onClick={() => setSelectedInvoice(null)}
+                onClick={() => { setSelectedInvoice(null); setAgreed(false); }}
                 className="flex-1 py-2.5 border rounded-lg text-sm font-medium hover:bg-secondary transition-colors"
               >
                 Cancel

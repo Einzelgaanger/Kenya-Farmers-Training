@@ -4,24 +4,28 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 15%;
+    /* AFIX — blue / green / white institutional theme */
+    --background: 210 40% 98%;
+    --foreground: 215 28% 17%;
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
-    --primary: 43 89% 38%;
+    --card-foreground: 215 28% 17%;
+    --primary: 210 90% 38%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 15% 15%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 46%;
-    --accent: 220 14% 96%;
-    --accent-foreground: 220 15% 15%;
-    --destructive: 0 84% 60%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 28% 17%;
+    --muted: 210 30% 95%;
+    --muted-foreground: 215 12% 42%;
+    --accent: 152 55% 42%;
+    --accent-foreground: 0 0% 100%;
+    --success: 152 55% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 43 89% 38%;
-    --radius: 0.5rem;
+    --border: 210 25% 90%;
+    --input: 210 25% 90%;
+    --ring: 210 90% 38%;
+    --radius: 0.625rem;
   }
 
   * {
@@ -33,13 +37,13 @@
   }
 
   h1, h2, h3 {
-    @apply font-display;
+    @apply font-display tracking-tight;
   }
 }
 
 @layer components {
   .stat-card {
-    @apply bg-card rounded-lg border p-5 transition-shadow hover:shadow-md;
+    @apply bg-card rounded-xl border border-border/80 p-5 transition-all duration-200 hover:shadow-md hover:border-primary/20;
   }
 
   .data-table {
@@ -47,14 +51,26 @@
   }
 
   .data-table th {
-    @apply text-left font-medium text-muted-foreground px-4 py-3 border-b bg-secondary/50;
+    @apply text-left font-medium text-muted-foreground px-4 py-3 border-b bg-secondary/70;
   }
 
   .data-table td {
-    @apply px-4 py-3 border-b;
+    @apply px-4 py-3 border-b border-border/60;
   }
 
   .data-table tbody tr {
-    @apply hover:bg-secondary/30 transition-colors;
+    @apply hover:bg-primary/[0.03] transition-colors;
+  }
+
+  .surface-card {
+    @apply bg-card rounded-xl border border-border/80 shadow-sm;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-accent-foreground rounded-lg text-sm font-semibold hover:bg-accent/90 transition-colors;
   }
 }

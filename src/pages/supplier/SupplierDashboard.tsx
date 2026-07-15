@@ -4,6 +4,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import PageHeader from '@/components/layout/PageHeader';
 import StatCard from '@/components/shared/StatCard';
 import StatusBadge from '@/components/shared/StatusBadge';
+import ProfileCompletionCard from '@/components/shared/ProfileCompletionCard';
 import { FileText, DollarSign, TrendingUp, Clock, ArrowRight } from 'lucide-react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
@@ -32,14 +33,16 @@ export default function SupplierDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total Invoices" value={totalListed} icon={FileText} accent="blue" />
-        <StatCard label="Total Value" value={formatCurrency(totalValue)} icon={DollarSign} accent="gold" />
-        <StatCard label="Active Trades" value={activeInvoices.length} icon={TrendingUp} accent="green" />
+        <StatCard label="Total Value" value={formatCurrency(totalValue)} icon={DollarSign} accent="green" />
+        <StatCard label="Active Trades" value={activeInvoices.length} icon={TrendingUp} accent="teal" />
         <StatCard label="Pending Offers" value={pendingOffers.length} icon={Clock} accent="red" change={pendingOffers.length > 0 ? 'Action required' : undefined} />
       </div>
 
+      <ProfileCompletionCard />
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Invoices */}
-        <div className="lg:col-span-2 border rounded-lg">
+        <div className="lg:col-span-2 surface-card">
           <div className="flex items-center justify-between p-4 border-b">
             <h3 className="font-semibold text-sm">Recent Invoices</h3>
             <button onClick={() => navigate('/supplier/invoices')} className="text-xs text-primary hover:underline flex items-center gap-1">

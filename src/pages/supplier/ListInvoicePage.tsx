@@ -6,6 +6,7 @@ import { useActor } from '@/hooks/useActor';
 import PageHeader from '@/components/layout/PageHeader';
 import { toast } from 'sonner';
 import { demoOrganisations } from '@/data/seed';
+import DocumentAttach from '@/components/shared/DocumentAttach';
 
 export default function ListInvoicePage() {
   const { user } = useAuth();
@@ -135,6 +136,11 @@ export default function ListInvoicePage() {
             placeholder="Brief description of goods/services..."
             className="w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5">Supporting documents</label>
+          <DocumentAttach />
         </div>
 
         <div className="flex gap-3 pt-2">

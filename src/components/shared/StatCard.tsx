@@ -1,26 +1,30 @@
 import { type LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface StatCardProps {
   label: string;
   value: string | number;
   icon: LucideIcon;
   change?: string;
-  accent?: 'gold' | 'green' | 'blue' | 'red';
+  accent?: 'blue' | 'green' | 'teal' | 'red';
 }
 
-const accentStyles = {
-  gold: 'border-l-gold text-gold',
-  green: 'border-l-emerald-500 text-emerald-600',
-  blue: 'border-l-blue-500 text-blue-600',
-  red: 'border-l-red-500 text-red-600',
+const accentMap = {
+  blue: { border: 'border-l-primary', icon: 'text-primary', soft: 'bg-brand-blue-light' },
+  green: { border: 'border-l-accent', icon: 'text-accent', soft: 'bg-brand-green-light' },
+  teal: { border: 'border-l-sky-500', icon: 'text-sky-600', soft: 'bg-sky-50' },
+  red: { border: 'border-l-red-500', icon: 'text-red-600', soft: 'bg-red-50' },
 };
 
-export default function StatCard({ label, value, icon: Icon, change, accent = 'gold' }: StatCardProps) {
+export default function StatCard({ label, value, icon: Icon, change, accent = 'blue' }: StatCardProps) {
+  const styles = accentMap[accent];
   return (
-    <div className={`stat-card border-l-4 ${accentStyles[accent]?.split(' ')[0]}`}>
+    <div className={cn('stat-card border-l-4', styles.border)}>
       <div className="flex items-center justify-between mb-3">
         <span className="text-sm text-muted-foreground font-medium">{label}</span>
-        <Icon size={18} className={accentStyles[accent]?.split(' ')[1]} />
+        <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', styles.soft)}>
+          <Icon size={16} className={styles.icon} />
+        </div>
       </div>
       <p className="text-2xl font-bold font-mono text-foreground">{value}</p>
       {change && <p className="text-xs text-muted-foreground mt-1">{change}</p>}

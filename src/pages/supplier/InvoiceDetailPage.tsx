@@ -102,7 +102,7 @@ export default function InvoiceDetailPage() {
                     <div className="flex gap-1.5 ml-2">
                       <button
                         onClick={() => setConfirmModal({ offerId: offer.id, accept: true })}
-                        className="px-3 py-1.5 text-xs font-medium bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition-colors"
+                        className="px-3 py-1.5 text-xs font-medium bg-accent text-white rounded-md hover:bg-accent/90 transition-colors"
                       >
                         Accept
                       </button>

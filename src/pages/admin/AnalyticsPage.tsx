@@ -77,7 +77,7 @@ export default function AnalyticsPage() {
               <p className="text-sm text-muted-foreground">Total Invoices</p>
               <p className="text-2xl font-bold font-mono mt-1">{invoices.length}</p>
             </div>
-            <div className="stat-card border-l-4 border-l-gold">
+            <div className="stat-card border-l-4 border-l-primary">
               <p className="text-sm text-muted-foreground">Total Volume</p>
               <p className="text-2xl font-bold font-mono mt-1">{formatCurrency(invoices.reduce((s, i) => s + i.amount, 0))}</p>
             </div>
@@ -94,7 +94,7 @@ export default function AnalyticsPage() {
                 <XAxis dataKey="month" fontSize={12} />
                 <YAxis fontSize={12} tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                 <Tooltip formatter={(v: number) => formatCurrency(v)} />
-                <Area type="monotone" dataKey="value" stroke="#B8860B" fill="#B8860B" fillOpacity={0.1} strokeWidth={2} />
+                <Area type="monotone" dataKey="value" stroke="#1B6BB5" fill="#1B6BB5" fillOpacity={0.1} strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -122,7 +122,7 @@ export default function AnalyticsPage() {
                 <XAxis type="number" fontSize={12} />
                 <YAxis type="category" dataKey="name" fontSize={12} width={80} />
                 <Tooltip />
-                <Bar dataKey="value" fill="#B8860B" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="value" fill="#1B6BB5" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -139,13 +139,13 @@ export default function AnalyticsPage() {
                 <XAxis dataKey="type" fontSize={12} />
                 <YAxis fontSize={12} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#B8860B" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="count" fill="#1B6BB5" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {participantData.map(p => (
-              <div key={p.type} className="stat-card border-l-4 border-l-gold">
+              <div key={p.type} className="stat-card border-l-4 border-l-primary">
                 <p className="text-sm text-muted-foreground">{p.type}</p>
                 <p className="text-2xl font-bold font-mono mt-1">{p.count}</p>
               </div>
@@ -157,7 +157,7 @@ export default function AnalyticsPage() {
       {tab === 'performance' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="stat-card border-l-4 border-l-gold">
+            <div className="stat-card border-l-4 border-l-primary">
               <p className="text-sm text-muted-foreground">Avg Discount Rate</p>
               <p className="text-2xl font-bold font-mono mt-1">{avgDiscount}%</p>
             </div>
@@ -178,7 +178,7 @@ export default function AnalyticsPage() {
                 <XAxis dataKey="month" fontSize={12} />
                 <YAxis fontSize={12} />
                 <Tooltip />
-                <Line type="monotone" dataKey="count" stroke="#B8860B" strokeWidth={2} dot={{ r: 4 }} />
+                <Line type="monotone" dataKey="count" stroke="#1B6BB5" strokeWidth={2} dot={{ r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>

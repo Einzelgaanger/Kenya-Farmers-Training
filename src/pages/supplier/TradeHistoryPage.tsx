@@ -39,7 +39,7 @@ export default function TradeHistoryPage() {
           <p className="text-sm text-muted-foreground">Completed Trades</p>
           <p className="text-2xl font-bold font-mono mt-1">{completedInvoices.length}</p>
         </div>
-        <div className="stat-card border-l-4 border-l-gold">
+        <div className="stat-card border-l-4 border-l-primary">
           <p className="text-sm text-muted-foreground">Total Value Traded</p>
           <p className="text-2xl font-bold font-mono mt-1">{formatCurrency(totalDisbursed)}</p>
         </div>

@@ -3,6 +3,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import { useAuth } from '@/contexts/AuthContext';
 import PageHeader from '@/components/layout/PageHeader';
 import StatCard from '@/components/shared/StatCard';
+import ProfileCompletionCard from '@/components/shared/ProfileCompletionCard';
 import { Database, Send, Layers, DollarSign, ArrowRight } from 'lucide-react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
@@ -28,14 +29,16 @@ export default function SPVDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Available IOUs" value={verifiedInvoices.length} icon={Database} accent="blue" />
-        <StatCard label="Active Offers" value={activeOffers.length} icon={Send} accent="gold" />
-        <StatCard label="Packages" value={packages.length} icon={Layers} accent="green" />
-        <StatCard label="Total AUM" value={formatCurrency(totalAUM)} icon={DollarSign} accent="gold" />
+        <StatCard label="Active Offers" value={activeOffers.length} icon={Send} accent="green" />
+        <StatCard label="Packages" value={packages.length} icon={Layers} accent="teal" />
+        <StatCard label="Total AUM" value={formatCurrency(totalAUM)} icon={DollarSign} accent="blue" />
       </div>
+
+      <ProfileCompletionCard />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pipeline summary */}
-        <div className="border rounded-lg">
+        <div className="surface-card">
           <div className="flex items-center justify-between p-4 border-b">
             <h3 className="font-semibold text-sm">Pipeline Overview</h3>
             <button onClick={() => navigate('/spv/registry')} className="text-xs text-primary hover:underline flex items-center gap-1">

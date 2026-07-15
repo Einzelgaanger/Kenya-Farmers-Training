@@ -4,6 +4,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import PageHeader from '@/components/layout/PageHeader';
 import StatCard from '@/components/shared/StatCard';
 import StatusBadge from '@/components/shared/StatusBadge';
+import ProfileCompletionCard from '@/components/shared/ProfileCompletionCard';
 import { FileText, ClipboardCheck, Calendar, AlertTriangle, ArrowRight } from 'lucide-react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
@@ -30,14 +31,16 @@ export default function BuyerDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Registered Invoices" value={myInvoices.length} icon={FileText} accent="blue" />
-        <StatCard label="Pending Consents" value={pendingConsents.length} icon={ClipboardCheck} accent="gold" change={pendingConsents.length > 0 ? 'Action required' : undefined} />
+        <StatCard label="Pending Consents" value={pendingConsents.length} icon={ClipboardCheck} accent="green" change={pendingConsents.length > 0 ? 'Action required' : undefined} />
         <StatCard label="Upcoming Payments" value={upcomingPayments.length} icon={Calendar} accent="green" />
         <StatCard label="Overdue" value={overduePayments.length} icon={AlertTriangle} accent="red" />
       </div>
 
+      <ProfileCompletionCard />
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pending consents */}
-        <div className="lg:col-span-2 border rounded-lg">
+        <div className="lg:col-span-2 surface-card">
           <div className="flex items-center justify-between p-4 border-b">
             <h3 className="font-semibold text-sm">Pending Consent Requests</h3>
             <button onClick={() => navigate('/buyer/consent')} className="text-xs text-primary hover:underline flex items-center gap-1">

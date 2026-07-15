@@ -35,7 +35,7 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total Invoices" value={totalInvoices} icon={FileText} accent="blue" />
-        <StatCard label="Organisations" value={totalOrgs} icon={Users} accent="gold" />
+        <StatCard label="Organisations" value={totalOrgs} icon={Users} accent="green" />
         <StatCard label="Overdue Payments" value={overduePayments.length} icon={AlertTriangle} accent="red" />
         <StatCard label="Platform Volume" value={formatCurrency(totalVolume)} icon={TrendingUp} accent="green" />
       </div>

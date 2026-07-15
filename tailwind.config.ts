@@ -33,6 +33,10 @@ export default {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
         },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
@@ -41,10 +45,11 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        gold: {
-          DEFAULT: '#B8860B',
-          light: '#D4A843',
-          dark: '#8B6508',
+        brand: {
+          blue: '#1B6BB5',
+          'blue-light': '#E8F2FB',
+          green: '#2F9E6B',
+          'green-light': '#E8F7F0',
         },
       },
       borderRadius: {
