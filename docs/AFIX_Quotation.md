@@ -1,126 +1,163 @@
-# Quotation — AFIX Trade Receivables Platform
+# Proposal — AFIX Trade Receivables Platform
 
-**Prepared for:** Client  
-**Prepared by:** ProDG / Cursor delivery  
+**Prepared for:** CPF / Client stakeholders  
+**IP owner:** **UzimaX**  
+**Product:** AFIX (private-sector trade receivables)  
 **Date:** 15 July 2026  
-**Reference:** AFIX-POC-Q-001  
+**Reference:** AFIX-PROP-Q-002  
+**Status:** Updated after client feedback (buyer IOU flow, APIs, IP)
 
 ---
 
-## 1. What this is
+## 1. Purpose of this proposal
 
-AFIX is a **private-sector trade receivables** web platform.
+This proposal describes what will be built for **AFIX**, aligned to your MVP analysis and the additional requirements you shared:
 
-It connects:
+1. Buyer process to **post invoices / IOUs** → system **notifies the supplier** to **opt in / sell** → on acceptance, generate **assignment of receivables to the SPV**  
+2. **APIs** so buyers can upload **approved / confirmed** invoices  
+3. **IOU generation** (detail to be confirmed with **Sule**)  
+4. Clear statement that **intellectual property belongs to UzimaX**
 
-- **Suppliers** (sellers with invoices to finance)
-- **Buyers** (companies that owe on those invoices)
-- **SPV / financier** (the party that buys or packages receivables)
-- **Admin** (platform oversight)
-
-The goal is simple: help businesses turn unpaid invoices into faster cash — with clear steps, approvals, and visibility at every stage.
-
-This work uses proven ideas from an existing government receivables system (**Malipo Polepole**-style flows), adapted for **private companies** (not government MDAs), and delivered as a **polished AFIX product** with a new look and branding.
+The UI will be an independent AFIX design (blue / green / white, mobile-first). This is **not** a ProDG product or template — it is a restructured build for your use under **UzimaX** ownership.
 
 ---
 
-## 2. What you will get
+## 2. What AFIX does (in plain language)
 
-A live web application (desktop and mobile browser) with:
+AFIX connects three parties around unpaid invoices (receivables):
 
-| Portal | Who uses it | What they can do |
-|--------|-------------|------------------|
-| **Supplier** | Businesses owed money | List invoices, see offers, track progress, view history |
-| **Buyer** | Businesses who owe | Review invoices, approve assignment/consent, see payment schedule |
-| **SPV** | Financier / capital side | Browse receivables, make offers, package deals, track settlements |
-| **Admin** | Your team | Overview of pipeline, users/organisations, activity, simple analytics |
+| Party | Role |
+|--------|------|
+| **Buyer** | Posts approved invoices / IOUs that they confirm are owed |
+| **Supplier** | Receives notification and chooses to **opt in / sell** the receivable |
+| **SPV** | Receives **assignment** of the receivable after supplier acceptance |
+| **Admin** | Oversees users, pipeline, and activity |
 
-Also included:
-
-- Secure sign-in with role-based access (each user only sees their portal)
-- Notifications for important actions (e.g. new offer, consent needed)
-- Clear status tracking on each invoice from listing through to settlement
-- Demo-ready environment for stakeholder walkthroughs
-- Hosting-ready setup and documentation for how to use the portals
+Goal: turn confirmed buyer payables into a clear, trackable path from **post → notify → opt-in → assign to SPV**.
 
 ---
 
-## 3. Core business flow (plain language)
+## 3. Required flow (your point 1) — included in delivery
 
-1. **Supplier lists an invoice** against a known buyer.  
-2. **Buyer verifies / acknowledges** the invoice on the platform.  
-3. **SPV makes a purchase offer** (discount / advance terms).  
-4. **Supplier accepts or rejects** the offer.  
-5. **Buyer signs assignment consent** so the receivable can move to the SPV.  
-6. **SPV packages** receivables where needed and manages disbursement / settlement views.  
-7. **Admin monitors** the full pipeline and organisation activity.
+### Buyer-led posting
 
-We will take the strongest process ideas from the Malipo Polepole (government) model and redesign them for AFIX’s private-sector language, roles, and screens — without changing the core idea of connecting buyer, supplier, and financier around receivables.
+1. **Buyer posts** an approved/confirmed invoice or IOU (amount, supplier, due date, reference).  
+2. Platform creates / links an **IOU registry** record.  
+3. **Supplier is notified** (in-app; email/SMS can follow later) to **opt in / sell**.  
+4. Supplier **accepts or declines**.  
+5. On **accept**, the system generates an **assignment of the receivable to the SPV** (assignment record + status on the timeline).  
+6. Buyer / SPV can see assignment status; Admin can audit the trail.
 
----
-
-## 4. Look and feel
-
-New client branding (not the old product identity):
-
-- Colours: **blue, green, and white** (including light blue and light green accents)
-- Clean, modern, institutional UI — easy for non-technical users
-- Clear names, labels, and structure for AFIX (private sector)
-
-Names, theme, layout polish, and wording will be updated for this client while keeping the same business principles.
+This is the **primary MVP workflow** (buyer-originated), in addition to the earlier supplier-list path where useful for demos.
 
 ---
 
-## 5. Timeline
+## 4. IOU generation (your point 3)
 
-| Phase | Days | What happens |
-|-------|------|----------------|
-| **Build** | 3 days | Core portals, flows, theme, and integrated features |
-| **Refine** | 2 days | Adjustments from your comments and suggestions |
-| **Total** | **5 working days** | From kick-off to polished handoff |
-
-Refinement days are reserved for your feedback after the first walkthrough of the build.
+- Platform will support **IOU creation and registry IDs** as part of buyer posting and lifecycle views.  
+- Detailed IOU format / numbering rules will be **confirmed with Sule** before final refine (you noted: *consult Sule*).  
+- Until then, a clear **demo IOU scheme** will be used, then adjusted to Sule’s guidance in the refine window.
 
 ---
 
-## 6. Investment
+## 5. APIs for buyer invoice upload (your point 2)
+
+You asked for **APIs** so buyers can upload approved/confirmed invoices from their own systems.
+
+| Item | Recommendation |
+|------|----------------|
+| **MVP (walkthrough demo)** | Portal upload / “post invoice” in the Buyer app — fully usable without external systems |
+| **API pack (optional add-on)** | REST endpoints for: authenticate buyer integration, submit confirmed invoice, check status, webhook/event for “supplier notified / opted in / assigned” |
+
+APIs, live external notifications (SMS/email), and production integrations move beyond a simple UI MVP toward a **connected system**. They are **doable** and priced separately below so we can discuss scope.
+
+---
+
+## 6. What you will see in the product (portals)
+
+| Portal | Capabilities (MVP) |
+|--------|---------------------|
+| **Buyer** | Post invoice/IOU, see status, consent/assignment views, payment schedule |
+| **Supplier** | Notification to opt in/sell, accept/decline, track assigned receivables |
+| **SPV** | See assigned receivables, offers/packaging engine (as applicable) |
+| **Admin** | Pipeline, users/orgs, activity |
+
+**Look & feel:** blue, green, white; glass-style modern UI; **mobile / iPhone-ready**.
+
+---
+
+## 7. Scope options & investment (for discussion)
+
+### Option A — Core MVP (recommended start)
+
+Includes portals, buyer post → notify supplier → opt-in → assignment to SPV, IOU registry (Sule refine), polish, 5-day delivery.
 
 | Item | Amount (KES) |
 |------|----------------|
-| **Total project fee** | **95,000** |
-| **Upfront (before build starts)** | **55,000** |
-| **On completion (after build + refine)** | **40,000** |
+| **Total** | **95,000** |
+| **Upfront** | **55,000** |
+| **On completion** | **40,000** |
 
-Payment of the upfront amount confirms the start date for the 5-day delivery window.
+| Phase | Days |
+|-------|------|
+| Build | 3 |
+| Refine with your comments (+ Sule IOU notes) | 2 |
+| **Total** | **5 working days** |
+
+### Option B — API pack (add-on)
+
+Buyer APIs for upload of approved/confirmed invoices + status checks + documented example.
+
+| Item | Amount (KES) |
+|------|----------------|
+| **API pack (indicative)** | **45,000** |
+| Timeline | **+3–4 working days** after MVP (or parallel if agreed) |
+
+### Option C — Full connected package (MVP + API)
+
+| Item | Amount (KES) |
+|------|----------------|
+| **Combined (indicative)** | **140,000** |
+| Payment split (example) | 80,000 upfront / 60,000 on completion |
+
+*Final API pricing confirmed after a short technical call (auth method, buyer systems, hosting).*
 
 ---
 
-## 7. What is included / not included
+## 8. Intellectual property (your point 4)
 
-**Included**
+**All intellectual property in the AFIX software deliverable produced under this engagement shall belong to UzimaX**, including source code, designs, and related materials created for this client, upon full payment as agreed.
 
-- Design and development of the AFIX portals described above  
-- Integration of selected flows and UX patterns from the prior receivables system  
-- Visual rebrand (blue / green / white theme, AFIX naming and structure)  
-- Two days of refinements based on your feedback  
-- Handover of the working application and basic usage notes  
-
-**Not included** (unless agreed separately)
-
-- Live bank / payment gateway integrations  
-- Formal legal documents as executed contracts (platform supports the workflow; legal templates are outside this fee unless added later)  
-- Ongoing monthly hosting or support retainers after handoff  
-- Major new features outside the scope above  
+The supplier retains no ownership claim over the work product, except the right to show anonymised portfolio screenshots only if UzimaX agrees in writing.
 
 ---
 
-## 8. How to proceed
+## 9. Included / not included
 
-1. Confirm this quotation in writing (email is enough).  
-2. Pay the **KES 55,000** upfront.  
-3. Share any logo, preferred wording, and demo account preferences.  
-4. We build over **3 days**, then refine for **2 days** with your input.  
-5. Final **KES 40,000** on completion.
+**Included in Option A**
+
+- Buyer post invoice/IOU → supplier notification (in-app) → opt-in/sell → assignment to SPV  
+- Supplier, Buyer, SPV, Admin portals (polished UI)  
+- IOU registry UI (Sule confirmation during refine)  
+- Demo environment and basic usage notes  
+- Handover of the working application to UzimaX  
+
+**Not included in Option A** (available in Option B / later)
+
+- Production buyer **APIs** (see Option B)  
+- Live SMS / email gateways (can be added later)  
+- Bank / payment rails  
+- Formal legal deed drafting by counsel (platform supports process; lawyers finalise documents)  
+
+---
+
+## 10. How we proceed
+
+1. Confirm which option: **A**, **A+B**, or **C**.  
+2. Confirm IOU rules with **Sule** (or assign a placeholder scheme for week one).  
+3. Upfront payment as agreed.  
+4. Build + refine on the agreed timeline.  
+5. Balance on completion; IP statement to UzimaX as above.
 
 ---
 
@@ -128,15 +165,17 @@ Payment of the upfront amount confirms the start date for the 5-day delivery win
 
 | | |
 |--|--|
-| **Client name** | _______________________________ |
+| **Client / stakeholder** | _______________________________ |
+| **On behalf of** | **UzimaX** |
+| **Selected option** | ☐ A · ☐ A+B · ☐ C |
 | **Signature** | _______________________________ |
 | **Date** | _______________________________ |
 
 | | |
 |--|--|
-| **Provider** | ProDG |
+| **Prepared by** | Alfred (delivery) |
 | **Date** | 15 July 2026 |
 
 ---
 
-*This quotation is for a non-technical overview of the product. Technical implementation details can be shared separately on request.*
+*This proposal is written for non-technical stakeholders. A short technical appendix (API shapes, IOU fields) can be attached after discussion with Sule and your systems team.*
