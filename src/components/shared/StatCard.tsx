@@ -20,13 +20,13 @@ export default function StatCard({ label, value, icon: Icon, change, accent = 'b
   const styles = accentMap[accent];
   return (
     <div className={cn('stat-card border-l-4', styles.border)}>
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-muted-foreground font-medium">{label}</span>
-        <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', styles.soft)}>
+      <div className="flex items-center justify-between mb-2.5 sm:mb-3 gap-2">
+        <span className="text-xs sm:text-sm text-muted-foreground font-medium truncate">{label}</span>
+        <div className={cn('w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0', styles.soft)}>
           <Icon size={16} className={styles.icon} />
         </div>
       </div>
-      <p className="text-2xl font-bold font-mono text-foreground">{value}</p>
+      <p className="text-xl sm:text-2xl font-bold font-mono text-foreground tracking-tight break-all">{value}</p>
       {change && <p className="text-xs text-muted-foreground mt-1">{change}</p>}
     </div>
   );

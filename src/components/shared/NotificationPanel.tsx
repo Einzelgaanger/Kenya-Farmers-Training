@@ -29,9 +29,11 @@ export default function NotificationPanel({ open, onClose }: NotificationPanelPr
 
   return (
     <>
-      <div className="fixed inset-0 z-40" onClick={onClose} />
-      <div className="fixed top-4 right-4 z-50 w-full max-w-sm bg-card border rounded-lg shadow-lg animate-fade-in">
-        <div className="flex items-center justify-between p-4 border-b">
+      <div className="fixed inset-0 z-[60] bg-slate-900/35 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="fixed z-[70] inset-x-3 bottom-[calc(var(--tab-bar-h)+var(--safe-bottom)+0.5rem)] sm:inset-auto sm:top-[max(1rem,var(--safe-top))] sm:right-4 sm:bottom-auto w-auto sm:w-full sm:max-w-sm glass-strong rounded-3xl shadow-2xl animate-fade-in overflow-hidden max-h-[70dvh] flex flex-col"
+      >
+        <div className="flex items-center justify-between p-4 border-b border-white/40 shrink-0">
           <div className="flex items-center gap-2">
             <Bell size={18} className="text-primary" />
             <h3 className="font-semibold text-sm">Notifications</h3>
@@ -45,26 +47,26 @@ export default function NotificationPanel({ open, onClose }: NotificationPanelPr
             {unread.length > 0 && (
               <button
                 onClick={() => markAllAsRead(user.id)}
-                className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground"
+                className="touch-target rounded-xl hover:bg-white/50 text-muted-foreground"
                 title="Mark all as read"
               >
                 <CheckCheck size={16} />
               </button>
             )}
-            <button onClick={onClose} className="p-1.5 rounded-md hover:bg-secondary">
+            <button onClick={onClose} className="touch-target rounded-xl hover:bg-white/50" aria-label="Close">
               <X size={16} />
             </button>
           </div>
         </div>
-        <div className="max-h-80 overflow-y-auto divide-y">
+        <div className="overflow-y-auto scroll-touch divide-y divide-border/40 flex-1">
           {userNotifs.length === 0 ? (
-            <p className="p-4 text-sm text-muted-foreground text-center">No notifications</p>
+            <p className="p-6 text-sm text-muted-foreground text-center">No notifications</p>
           ) : (
             userNotifs.slice(0, 20).map(n => (
               <button
                 key={n.id}
                 onClick={() => handleClick(n.id, n.link)}
-                className={`w-full text-left px-4 py-3 hover:bg-secondary/30 transition-colors ${!n.read ? 'bg-primary/5' : ''}`}
+                className={`w-full text-left px-4 py-3.5 hover:bg-white/50 active:bg-primary/5 transition-colors min-h-[64px] ${!n.read ? 'bg-primary/[0.04]' : ''}`}
               >
                 <p className="text-sm font-medium">{n.title}</p>
                 <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{n.message}</p>
